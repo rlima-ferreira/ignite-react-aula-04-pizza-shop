@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom'
 
 export default function AppLayout() {
   return (
@@ -8,5 +8,5 @@ export default function AppLayout() {
         <Outlet />
       </div>
     </div>
-  );
+  )
 }
