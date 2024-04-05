@@ -1,9 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { restaurantAPI } from '@/api/restaurant'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -24,14 +26,20 @@ export default function SignUp() {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<SignUpForm>()
+  const { mutateAsync: createAsync } = useMutation({
+    mutationFn: restaurantAPI.create,
+  })
 
-  async function signIn(formData: SignUpForm) {
+  async function signUp(formData: SignUpForm) {
     console.log(formData)
 
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await createAsync(formData)
 
     toast.success(`Restaurante cadastrado com sucesso`, {
-      action: { label: 'Entrar', onClick: () => navigate('/sign-in') },
+      action: {
+        label: 'Entrar',
+        onClick: () => navigate(`/sign-in?email=${formData.email}`),
+      },
     })
   }
 
@@ -52,7 +60,7 @@ export default function SignUp() {
             </p>
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit(signIn)}>
+          <form className="space-y-4" onSubmit={handleSubmit(signUp)}>
             <div className="space-y-2">
               <Label htmlFor="restaurantName">Nome do estabelecimento</Label>
               <Input

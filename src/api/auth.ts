@@ -7,5 +7,5 @@ export interface SignInBody {
 // const baseRoute = ''
 
 export const authAPI = {
-  signIn: (body: SignInBody) => api.post('/authenticate', body),
+  login: async (body: SignInBody) => api.post('/authenticate', body),
 }
